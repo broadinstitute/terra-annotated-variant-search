@@ -1,0 +1,24 @@
+name: annvarsearch
+
+services:
+
+  service:
+    image: terra-annotated-variant-search
+    depends_on:
+      - database
+    environment:
+      - DATABASE_HOSTNAME=database
+    ports:
+      - "8080:8080"
+
+  database:
+    image: postgres:14
+    environment:
+      - POSTGRES_PASSWORD=password
+#      - POSTGRES_USER=dbuser    # default: postgres
+#      - POSTGRES_DB=annvarsearch_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../build/tmp/postgres-data:/var/lib/postgresql/data
+      - ./init-db/postgres-init.sql:/docker-entrypoint-initdb.d/postgres-init.sql
